@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 
 from .config import (SETUP_PATH, GAME_PATH, ACCOUNTS, DEFAULT_CONFIG,
-        DEFAULT_SV, REGION, LOCALE)
+        DEFAULT_SV, DEFAULT_ADDONS, REGION, LOCALE)
 
 class Setup:
     def __init__(self):
@@ -105,10 +105,22 @@ class Setup:
             if sv_path:
                 for file in self.default_sv_files:
                     shutil.copy(file, sv_path)
-            
+
+    def create_multibox_utils(self):
+        """Create MultiboxUtils.lua files to store acc_idx for in game use."""
+
+        lua_table = 'MultiboxUtilsDB = {{ ["accountNumber"] = {acc_idx} }}'
+
+        for acc_idx, account in enumerate(self.accounts):
+            sv_path = account['sv_path'] or None
+            if sv_path:
+                with (sv_path / 'MultiboxUtils.lua').open('w') as f:
+                    f.write(lua_table.format(acc_idx=acc_idx))
+
     def initial_setup(self):
         if not self.is_admin:
             raise Exception('Requires administrator privilleges')
+
         for account in self.accounts:
             root_path = account['path']
             # Create account folder tree
@@ -125,20 +137,32 @@ class Setup:
                     self.interface_path, target_is_directory=True)
             (root_path / 'Data').symlink_to(
                     self.data_path, target_is_directory=True)
+                    
         # Copy wow.exe to each account folder
         self.copy_executables()
 
-    def post_setup(self):
+    def post_setup(self, copy_addons=False):
         if not self.is_admin:
             raise Exception('Requires administrator privilleges')
+
+        # Automatically create MultiboxUtils.lua with corresponding accNumber
+        self.create_multibox_utils()
+        # Copy default SVs
         self.copy_default_sv()
-        # SV shortcuts
+        # Copy or replace game addons with default addons (from default folder)
+        if copy_addons:
+            addons_path = self.interface_path / 'AddOns'
+            default_addons_path = Path(DEFAULT_ADDONS)
+            shutil.rmtree(addons_path, ignore_errors=True)
+            shutil.copytree(default_addons_path, addons_path)
+
+        # SV folder shortcuts (symlinks)
         for account in self.accounts:
             sv_path = account['sv_path']
             sv_link_path = account['path'] / 'SavedVariables'
             if sv_path and not sv_link_path.is_symlink():
                 sv_link_path.symlink_to(sv_path, target_is_directory=True)
-        # addon folder shortcut in setup folder
+        # addon folder shortcut (symlink) in setup folder
         addon_link_path = self.setup_path / 'AddOns'
         if not addon_link_path.is_symlink():
             addon_path = self.setup_path / 'AddOns'

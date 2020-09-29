@@ -16,15 +16,16 @@
 - [x] post launching wow and getting account folders
   - [x] savedVariables shortcuts
   - [x] addons folder shortcut
+  - [x] optional: copy addons from default to game path
   - [x] Addons default savedvariables copy (elvui, weakauras, abp, moveanything)
-- [ ] improvements
-  - [ ] MultiboxUtils account number
+- [x] improvements
+  - [x] MultiboxUtils account number
 - [ ] backup functionality
+- [ ] individual saved var copy from main wow account to rest
 
 # Python os utilities
 
 - pathlib
-- os.mkdirs vs pathlib.mkdir
 - shutil
 
 # Config

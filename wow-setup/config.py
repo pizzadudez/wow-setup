@@ -11,6 +11,7 @@ GAME_PATH = config.get('GAME_PATH', None)
 ACCOUNTS = config.get('ACCOUNTS', None)
 DEFAULT_CONFIG = config.get('DEFAULT_CONFIG', None)
 DEFAULT_SV = config.get('DEFAULT_SV', None)
+DEFAULT_ADDONS = config.get('DEFAULT_ADDONS', None)
 
 region = config.get('REGION', None)
 REGION = region.upper() if region.upper() in ['US', 'EU'] else None
