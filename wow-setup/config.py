@@ -9,3 +9,12 @@ with open(config_path, 'r') as file:
 SETUP_PATH = config.get('SETUP_PATH', None)
 GAME_PATH = config.get('GAME_PATH', None)
 ACCOUNTS = config.get('ACCOUNTS', None)
+DEFAULT_CONFIG = config.get('DEFAULT_CONFIG', None)
+DEFAULT_SV = config.get('DEFAULT_SV', None)
+
+region = config.get('REGION', None)
+REGION = region.upper() if region.upper() in ['US', 'EU'] else None
+if not REGION:
+    raise ValueError('Invalid REGION in config.json')
+locale = {'US': 'enus', 'EU': 'engb'}
+LOCALE = locale[REGION]

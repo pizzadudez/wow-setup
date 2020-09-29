@@ -1,16 +1,46 @@
 {
-  "SETUP_PATH": "E:\\_wow_test",
-  "GAME_PATH": "E:\\_wow\\World of Warcraft",
-  "ACCOUNTS": {
-    "0": "",
-    "1": "",
-    "2": "",
-    "3": "",
-    "4": "",
-    "5": "",
-    "6": "",
-    "7": "",
-    "8": "",
-    "9": ""
-  }
+  "SETUP_PATH": "C:\\_wow_test",
+  "GAME_PATH": "C:\\_wow\\World of Warcraft",
+  "ACCOUNTS": [
+    {
+      "email": "",
+      "license_num": 1
+    },
+    {
+      "email": "",
+      "license_num": 2
+    },
+    {
+      "email": "",
+      "license_num": 3
+    },
+    {
+      "email": "",
+      "license_num": 4
+    },
+    {
+      "email": "",
+      "license_num": 5
+    },
+    {
+      "email": "",
+      "license_num": 1
+    },
+    {
+      "email": "",
+      "license_num": 2
+    },
+    {
+      "email": "",
+      "license_num": 3
+    },
+    {
+      "email": "",
+      "license_num": 4
+    },
+    {
+      "email": "",
+      "license_num": 5
+    }
+  ]
 }
