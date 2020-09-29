@@ -1,15 +1,15 @@
 import sys
-import os
 import ctypes
 import shutil
 from pathlib import Path
 
-from .config import SETUP_PATH, GAME_PATH, ACCOUNTS, DEFAULT_CONFIG, DEFAULT_SV, REGION, LOCALE
-
+from .config import (SETUP_PATH, GAME_PATH, ACCOUNTS, DEFAULT_CONFIG,
+        DEFAULT_SV, REGION, LOCALE)
 
 class Setup:
     def __init__(self):
         self.is_admin = ctypes.windll.shell32.IsUserAnAdmin() != 0
+
         # Account folders parent directory pathj
         self.setup_path = Path(SETUP_PATH)
         # Game installation paths
@@ -17,8 +17,18 @@ class Setup:
         self.data_path = self.game_path / 'Data'
         self.interface_path = self.game_path / '_retail_' / 'Interface'
         self.exe_path = self.game_path / '_retail_' / 'Wow.exe'
-        # Root paths for account folders
-        self.accounts = []
+
+        # Account properties dicts
+        self.accounts = self._accounts()
+        # Config template used to create Config.wtf files
+        self._config_template = self._create_config_template()
+        # Default saved variables lua files
+        self.default_sv_files = [x for x in Path(DEFAULT_SV).glob('*.lua') if x.is_file()]
+
+    def _accounts(self):
+        """Generate list of account dictionaries."""
+
+        _accounts = []
         for idx, info in enumerate(ACCOUNTS):
             account_path = self.setup_path / f'wow{idx}'
             # account_id folder only gets created after first login into acc
@@ -27,50 +37,35 @@ class Setup:
             sv_path = (account_path / '_retail_' / 'WTF' / 'Account' /
                     account_id / 'SavedVariables') if account_id else None
 
-            self.accounts.append({
+            _accounts.append({
                 'path': account_path,
                 'email': info.get('email', ''),
                 'license_num': info.get('license_num', 1),
-                'sv_path': sv_path
-                       
+                'sv_path': sv_path         
             })
         
-        # Default saved variables
-        self.default_sv_files = [x for x in Path(DEFAULT_SV).glob('*.lua') if x.is_file()]
+        return _accounts
 
-        # Create config.wtf string template
+    def _create_config_template(self):
+        """Create template string from default Config.wtf file."""
+
         important_variables = ['accountName', 'accountList', 'portal', 'agentUID']
         # Lines we want to modify
-        substitution_lines = '\n'.join([
+        format_lines = '\n'.join([
             'SET portal "{region}"',
             'SET agentUID "wow_{locale}"',
             'SET accountName "{email}"',
             'SET accountList "{license_num}"'
         ])
-        other_lines = []
+        new_lines = [format_lines]
         with open(Path(DEFAULT_CONFIG)) as f:
             config_lines = f.read().splitlines()
             for line in config_lines:
                 variable_name = line.split(' ')[1]
-                if variable_name in important_variables:
-                    continue
-                other_lines.append(line)
-        other_lines = '\n'.join(other_lines)
+                if variable_name not in important_variables:
+                    new_lines.append(line)
 
-        self.config_template = f'{substitution_lines}\n{other_lines}'
-
-
-    def find_account_id(self, account_idx):
-        "Find account_id folder."
-        
-        #TODO will break if multiple accounts present
-
-        account_folder = (self.setup_path / f'wow{account_idx}' / '_retail_' /
-                'WTF' / 'Account')
-        if not account_folder.exists():
-            return None
-        account_ids = [f.name for f in account_folder.iterdir() if f.is_dir() and '#' in f.name]
-        return account_ids[0]
+        return '\n'.join(new_lines)
 
     def get_config_string(self, email, license_num):
         "Return modified config string for specific account."
@@ -81,7 +76,21 @@ class Setup:
             'email': email,
             'license_num': f'!WoW{license_num}'
         }
-        return self.config_template.format(**substitutes)
+
+        return self._config_template.format(**substitutes)
+        
+    def find_account_id(self, account_idx):
+        "Find account_id folder."
+        
+        #TODO will break if multiple accounts present
+
+        account_folder = (self.setup_path / f'wow{account_idx}' / '_retail_' /
+                'WTF' / 'Account')
+        if not account_folder.exists():
+            return None
+        account_ids = [f.name for f in account_folder.iterdir() if f.is_dir() and '#' in f.name]
+        
+        return account_ids[0]
 
     def copy_executables(self):
         for account in self.accounts:
@@ -94,7 +103,6 @@ class Setup:
         for account in self.accounts:
             sv_path = account['sv_path'] or None
             if sv_path:
-                print('copied to '+ str(sv_path))
                 for file in self.default_sv_files:
                     shutil.copy(file, sv_path)
             
@@ -121,20 +129,37 @@ class Setup:
         self.copy_executables()
 
     def post_setup(self):
+        if not self.is_admin:
+            raise Exception('Requires administrator privilleges')
         self.copy_default_sv()
         # SV shortcuts
+        for account in self.accounts:
+            sv_path = account['sv_path']
+            sv_link_path = account['path'] / 'SavedVariables'
+            if sv_path and not sv_link_path.is_symlink():
+                sv_link_path.symlink_to(sv_path, target_is_directory=True)
         # addon folder shortcut in setup folder
+        addon_link_path = self.setup_path / 'AddOns'
+        if not addon_link_path.is_symlink():
+            addon_path = self.setup_path / 'AddOns'
+            addon_link_path.symlink_to(addon_path, target_is_directory=True)
 
-    
     def backup(self):
         # TODO implement wtf folders backup
+        pass
+
+    def restore_backup(self):
+        # TODO implement wtf folders restore from backup
         pass
 
         
 def main():
     s = Setup()
-    s.post_setup()
-    print(ctypes.windll.shell32.IsUserAnAdmin() != 0)
+    action = sys.argv[1]
+    if action == 'init':
+        s.initial_setup()
+    elif action == 'post':
+        s.post_setup()
 
 
 if __name__ == '__main__':

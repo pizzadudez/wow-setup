@@ -13,9 +13,9 @@
   - [x] copy exe - standalone utility for later too
   - [x] Config.wtf from base dependency
     - [x] set 'accountName', 'accountList' for each individually
-- [ ] post launching wow and getting account folders
-  - [ ] savedVariables shortcuts
-  - [ ] addons folder shortcut
+- [x] post launching wow and getting account folders
+  - [x] savedVariables shortcuts
+  - [x] addons folder shortcut
   - [x] Addons default savedvariables copy (elvui, weakauras, abp, moveanything)
 - [ ] improvements
   - [ ] MultiboxUtils account number
@@ -31,5 +31,5 @@
 
 SET portal "US"
 SET agentUID "wow_enus"
-SET accountName "aschulz9494@gmail.com"
+SET accountName "a@gmail.com"
 SET accountList "WoW4|WoW5|WoW3|WoW2|!WoW1|"
