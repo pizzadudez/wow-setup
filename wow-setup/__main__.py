@@ -68,7 +68,7 @@ class Setup:
         return '\n'.join(new_lines)
 
     def get_config_string(self, email, license_num):
-        "Return modified config string for specific account."
+        """Return modified config string for specific account."""
 
         substitutes = {
             'region': REGION,
@@ -80,7 +80,7 @@ class Setup:
         return self._config_template.format(**substitutes)
         
     def find_account_id(self, account_idx):
-        "Find account_id folder."
+        """Find account_id folder (account SavedVariables parent directory)"""
         
         #TODO will break if multiple accounts present
 
@@ -93,12 +93,14 @@ class Setup:
         return account_ids[0]
 
     def copy_executables(self):
+        """Copy game.exe to all account folders. Useful after game updates."""
+
         for account in self.accounts:
             root_path = account['path']
             shutil.copy2(self.exe_path, root_path / '_retail_')
 
     def copy_default_sv(self):
-        "Copy or replace saved variables with defaults."
+        """Copy or replace saved variables with defaults."""
 
         for account in self.accounts:
             sv_path = account['sv_path'] or None
@@ -137,7 +139,7 @@ class Setup:
                     self.interface_path, target_is_directory=True)
             (root_path / 'Data').symlink_to(
                     self.data_path, target_is_directory=True)
-                    
+
         # Copy wow.exe to each account folder
         self.copy_executables()
 
