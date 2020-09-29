@@ -21,6 +21,7 @@
 - [x] improvements
   - [x] MultiboxUtils account number
 - [ ] backup functionality
+  - [ ] WTF folders as a whole
 - [ ] individual saved var copy from main wow account to rest
 
 # Python os utilities

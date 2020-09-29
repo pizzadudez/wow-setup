@@ -41,6 +41,7 @@ class Setup:
                 'path': account_path,
                 'email': info.get('email', ''),
                 'license_num': info.get('license_num', 1),
+                'account_id': account_id,
                 'sv_path': sv_path         
             })
         
@@ -170,6 +171,21 @@ class Setup:
             addon_path = self.setup_path / 'AddOns'
             addon_link_path.symlink_to(addon_path, target_is_directory=True)
 
+    def dump_account_ids(self):
+        """Utility method for other tools. Prints list of account_ids in order."""
+
+        ids = []
+        for account in self.accounts:
+            acc_id = account['account_id']
+            if acc_id:
+                ids.append(acc_id)
+            else:
+                path = account['path']
+                print(f'account_id folder not found for account at: {path}')
+        
+        ids_string = ','.join(ids)
+        print(ids_string)
+
     def backup(self):
         # TODO implement wtf folders backup
         pass
@@ -181,11 +197,15 @@ class Setup:
         
 def main():
     s = Setup()
-    action = sys.argv[1]
+    action = None if len(sys.argv) == 1 else sys.argv[1]
     if action == 'init':
         s.initial_setup()
     elif action == 'post':
         s.post_setup()
+    elif action == 'accounts':
+        s.dump_account_ids()
+    else:
+        s.dump_account_ids()
 
 
 if __name__ == '__main__':
