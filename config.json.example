@@ -1,46 +1,60 @@
 {
-  "SETUP_PATH": "C:\\_wow_test",
-  "GAME_PATH": "C:\\_wow\\World of Warcraft",
+  "REGION": "eu",
+  "SETUP_PATH": "C:\\test",
+  "GAME_PATH": "C:\\World of Warcraft",
+  "DEFAULT_CONFIG": "C:\\_defaults\\Config.wtf",
+  "DEFAULT_SV": "C:\\_defaults\\SavedVariables",
+  "DEFAULT_ADDONS": "C:\\_defaults\\AddOns",
   "ACCOUNTS": [
     {
       "email": "",
-      "license_num": 1
+      "license_num": 1,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 2
+      "license_num": 2,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 3
+      "license_num": 3,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 4
+      "license_num": 4,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 5
+      "license_num": 5,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 1
+      "license_num": 1,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 2
+      "license_num": 2,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 3
+      "license_num": 3,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 4
+      "license_num": 4,
+      "account_id": ""
     },
     {
       "email": "",
-      "license_num": 5
+      "license_num": 5,
+      "account_id": ""
     }
   ]
 }
