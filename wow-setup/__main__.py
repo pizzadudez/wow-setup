@@ -4,7 +4,7 @@ import ctypes
 import shutil
 from pathlib import Path
 
-from .config import SETUP_PATH, GAME_PATH, ACCOUNTS, DEFAULT_CONFIG, REGION, LOCALE
+from .config import SETUP_PATH, GAME_PATH, ACCOUNTS, DEFAULT_CONFIG, DEFAULT_SV, REGION, LOCALE
 
 
 class Setup:
@@ -20,13 +20,24 @@ class Setup:
         # Root paths for account folders
         self.accounts = []
         for idx, info in enumerate(ACCOUNTS):
+            account_path = self.setup_path / f'wow{idx}'
+            # account_id folder only gets created after first login into acc
+            account_id = info.get('account_id', None) or self.find_account_id(idx)
+            # Saved Variables folder path
+            sv_path = (account_path / '_retail_' / 'WTF' / 'Account' /
+                    account_id / 'SavedVariables') if account_id else None
+
             self.accounts.append({
-                'path': self.setup_path / f'wow{idx}',
+                'path': account_path,
                 'email': info.get('email', ''),
                 'license_num': info.get('license_num', 1),
-                'account_id': info.get('account_id', None)
+                'sv_path': sv_path
+                       
             })
         
+        # Default saved variables
+        self.default_sv_files = [x for x in Path(DEFAULT_SV).glob('*.lua') if x.is_file()]
+
         # Create config.wtf string template
         important_variables = ['accountName', 'accountList', 'portal', 'agentUID']
         # Lines we want to modify
@@ -49,7 +60,21 @@ class Setup:
         self.config_template = f'{substitution_lines}\n{other_lines}'
 
 
-    def create_modified_config_string(self, email, license_num):
+    def find_account_id(self, account_idx):
+        "Find account_id folder."
+        
+        #TODO will break if multiple accounts present
+
+        account_folder = (self.setup_path / f'wow{account_idx}' / '_retail_' /
+                'WTF' / 'Account')
+        if not account_folder.exists():
+            return None
+        account_ids = [f.name for f in account_folder.iterdir() if f.is_dir() and '#' in f.name]
+        return account_ids[0]
+
+    def get_config_string(self, email, license_num):
+        "Return modified config string for specific account."
+
         substitutes = {
             'region': REGION,
             'locale': LOCALE,
@@ -63,7 +88,17 @@ class Setup:
             root_path = account['path']
             shutil.copy2(self.exe_path, root_path / '_retail_')
 
-    def create_folders(self):
+    def copy_default_sv(self):
+        "Copy or replace saved variables with defaults."
+
+        for account in self.accounts:
+            sv_path = account['sv_path'] or None
+            if sv_path:
+                print('copied to '+ str(sv_path))
+                for file in self.default_sv_files:
+                    shutil.copy(file, sv_path)
+            
+    def initial_setup(self):
         if not self.is_admin:
             raise Exception('Requires administrator privilleges')
         for account in self.accounts:
@@ -75,7 +110,7 @@ class Setup:
             with (wtf_path / 'Config.wtf').open('w') as f:
                 email = account['email']
                 license_num = account['license_num']
-                config_string = self.create_modified_config_string(email, license_num)
+                config_string = self.get_config_string(email, license_num)
                 f.write(config_string)
             # Create symbolic links (Data + Interface)
             (root_path / '_retail_' / 'Interface').symlink_to(
@@ -85,10 +120,20 @@ class Setup:
         # Copy wow.exe to each account folder
         self.copy_executables()
 
+    def post_setup(self):
+        self.copy_default_sv()
+        # SV shortcuts
+        # addon folder shortcut in setup folder
+
+    
+    def backup(self):
+        # TODO implement wtf folders backup
+        pass
+
         
 def main():
     s = Setup()
-    s.create_folders()
+    s.post_setup()
     print(ctypes.windll.shell32.IsUserAnAdmin() != 0)
 
 

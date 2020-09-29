@@ -16,7 +16,7 @@
 - [ ] post launching wow and getting account folders
   - [ ] savedVariables shortcuts
   - [ ] addons folder shortcut
-  - [ ] Addons default savedvariables copy (elvui, weakauras, abp, moveanything)
+  - [x] Addons default savedvariables copy (elvui, weakauras, abp, moveanything)
 - [ ] improvements
   - [ ] MultiboxUtils account number
 - [ ] backup functionality
