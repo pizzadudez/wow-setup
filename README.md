@@ -1,8 +1,12 @@
 # SETUP
 
-- pip install venv
-- install requirements.txt
-- config
+- `python -m venv --system-site-packages env`
+- `env\Scripts\Activate.bat`
+- `pip install -U -r requirements.txt`
+
+# Only freeze local venv packages
+
+- `pip freeze --local > requirements.txt`
 
 # What it needs to do
 
