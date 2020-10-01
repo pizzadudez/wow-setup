@@ -1,10 +1,14 @@
 {
-  "REGION": "eu",
-  "SETUP_PATH": "C:\\test",
+  "REGION": "us",
   "GAME_PATH": "C:\\World of Warcraft",
-  "DEFAULT_CONFIG": "C:\\_defaults\\Config.wtf",
-  "DEFAULT_SV": "C:\\_defaults\\SavedVariables",
-  "DEFAULT_ADDONS": "C:\\_defaults\\AddOns",
+  "SETUP_PATH": "C:\\wow_test",
+  "BACKUP_PATH": "D:\\_backup\\wow_test",
+  "RESTORE_PATH": "D:\\_backup\\wow_test",
+
+  "DEFAULT_CONFIG": "D:\\_backup\\wow-setup-defaults\\Config.wtf",
+  "DEFAULT_SV": "D:\\_backup\\wow-setup-defaults\\SavedVariables",
+  "DEFAULT_ADDONS": "D:\\_backup\\wow-setup-defaults\\AddOns",
+
   "ACCOUNTS": [
     {
       "email": "",

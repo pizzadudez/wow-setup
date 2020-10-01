@@ -6,6 +6,7 @@ from .setup import WowSetup
 def main(debug_arg=None):
     setup = WowSetup()
     action = debug_arg if len(sys.argv) == 1 else sys.argv[1]
+
     if action == "init":
         setup.initial_setup()
     elif action == "post":
