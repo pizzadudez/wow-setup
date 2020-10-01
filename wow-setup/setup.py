@@ -35,7 +35,7 @@ class WowSetup:
         # Account properties dicts
         self.accounts = self._accounts()
         # Config template used to create Config.wtf files
-        self._config_template = self._create_config_template()
+        self._config_template = None
         # Default saved variables lua files
         self.default_sv_files = [
             x for x in Path(DEFAULT_SV).glob("*.lua") if x.is_file()
@@ -102,7 +102,7 @@ class WowSetup:
                 if variable_name not in important_variables:
                     new_lines.append(line)
 
-        return "\n".join(new_lines)
+        self._config_template = "\n".join(new_lines)
 
     def get_config_string(self, email, license_num):
         """Return modified config string for specific account."""
@@ -113,6 +113,8 @@ class WowSetup:
             "email": email,
             "license_num": f"!WoW{license_num}",
         }
+        if not self._config_template:
+            self._create_config_template()
 
         return self._config_template.format(**substitutes)
 
