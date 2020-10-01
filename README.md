@@ -24,8 +24,9 @@
   - [x] Addons default savedvariables copy (elvui, weakauras, abp, moveanything)
 - [x] improvements
   - [x] MultiboxUtils account number
-- [ ] backup functionality
-  - [ ] WTF folders as a whole
+- [x] backup functionality
+  - [x] WTF folders as a whole
+  - [x] AddOns folder
 - [ ] individual saved var copy from main wow account to rest
 
 # Python os utilities
