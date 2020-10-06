@@ -279,6 +279,9 @@ class WowSetup:
         # Copy wow.exe to each account folder
         self.copy_executables()
 
+        # re-run account list creation to get acc_id and sv_path
+        self.accounts = self._accounts()
+
         self.post_setup(restoring=True)
 
     def dump_account_ids(self):
