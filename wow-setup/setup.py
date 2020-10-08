@@ -298,3 +298,18 @@ class WowSetup:
 
         ids_string = ",".join(ids)
         print(ids_string)
+
+    def copy_sv(self, source_acc_idx, addon_name):
+        """Copy SavedVariable from one account to all others"""
+
+        source_sv_path = self.accounts[source_acc_idx].get("sv_path", None)
+        if not source_sv_path:
+            return
+
+        for account in self.accounts:
+            if account["idx"] == source_acc_idx:
+                continue
+            else:
+                sv_path = account["sv_path"] or None
+                if sv_path:
+                    shutil.copy(source_sv_path / f"{addon_name}.lua", sv_path)

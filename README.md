@@ -27,7 +27,8 @@
 - [x] backup functionality
   - [x] WTF folders as a whole
   - [x] AddOns folder
-- [ ] individual saved var copy from main wow account to rest
+- [x] individual saved var copy from main wow account to rest
+  - [x] set addon names for which we want to be able to copy_sv for
 
 # Python os utilities
 

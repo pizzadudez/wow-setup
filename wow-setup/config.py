@@ -24,3 +24,5 @@ RESTORE_PATH = config.get("RESTORE_PATH", None)
 DEFAULT_CONFIG = config.get("DEFAULT_CONFIG", None)
 DEFAULT_SV = config.get("DEFAULT_SV", None)
 DEFAULT_ADDONS = config.get("DEFAULT_ADDONS", None)
+# Addon names, used for the copy SavedVariables feature
+ADDON_NAMES = config.get("ADDON_NAMES", [])
