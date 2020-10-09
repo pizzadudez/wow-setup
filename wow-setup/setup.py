@@ -302,8 +302,11 @@ class WowSetup:
     def copy_sv(self, source_acc_idx, addon_name):
         """Copy SavedVariable from one account to all others"""
 
-        source_sv_path = self.accounts[source_acc_idx].get("sv_path", None)
-        if not source_sv_path:
+        source_path = (
+            self.accounts[source_acc_idx].get("sv_path", None) / f"{addon_name}.lua"
+        )
+        if not source_path.exists():
+            print(f"File: '{addon_name}.lua' not found...")
             return
 
         for account in self.accounts:
@@ -312,4 +315,4 @@ class WowSetup:
             else:
                 sv_path = account["sv_path"] or None
                 if sv_path:
-                    shutil.copy(source_sv_path / f"{addon_name}.lua", sv_path)
+                    shutil.copy(source_path, sv_path)

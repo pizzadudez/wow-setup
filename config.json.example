@@ -9,6 +9,15 @@
   "DEFAULT_SV": "D:\\_backup\\wow-setup-defaults\\SavedVariables",
   "DEFAULT_ADDONS": "D:\\_backup\\wow-setup-defaults\\AddOns",
 
+  "ADDON_NAMES": [
+    "ActionBarProfiles",
+    "WeakAuras",
+    "MoveAnything",
+    "ElvUI",
+    "GatherMate2",
+    "Routes"
+  ],
+
   "ACCOUNTS": [
     {
       "email": "",
