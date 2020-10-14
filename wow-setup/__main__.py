@@ -8,6 +8,7 @@ POST_SETUP = "Post Setup (default SV, MultiboxUtils.lua, copy AddOns, shortcuts)
 CREATE_BACKUP = "Backup (WTF folders and AddOns)"
 RESTORE_FROM_BACKUP = "Restore (full setup using a backup)"
 COPY_SV = "Copy SavedVariable(s) (from one account to all others)"
+COPY_EXE = "After a game update, recopy the game executable"
 DUMP_ACCOUNT_IDS = "Print account IDs (ex: 43512345#5)"
 
 actions = [
@@ -16,6 +17,7 @@ actions = [
     CREATE_BACKUP,
     RESTORE_FROM_BACKUP,
     COPY_SV,
+    COPY_EXE,
     DUMP_ACCOUNT_IDS,
 ]
 
@@ -54,6 +56,8 @@ def main():
                 setup.copy_sv(acc_idx, addon)
         else:
             setup.copy_sv(acc_idx, addon_name)
+    elif action == COPY_EXE:
+        setup.copy_executables()
     elif action == DUMP_ACCOUNT_IDS:
         setup.dump_account_ids()
 
