@@ -9,6 +9,7 @@ CREATE_BACKUP = "Backup (WTF folders and AddOns)"
 RESTORE_FROM_BACKUP = "Restore (full setup using a backup)"
 COPY_SV = "Copy SavedVariable(s) (from one account to all others)"
 COPY_EXE = "After a game update, recopy the game executable"
+CREATE_CONFIG_FROM_DEFAULT = "Generate Config.wtf files based on default template"
 DUMP_ACCOUNT_IDS = "Print account IDs (ex: 43512345#5)"
 
 actions = [
@@ -18,6 +19,7 @@ actions = [
     RESTORE_FROM_BACKUP,
     COPY_SV,
     COPY_EXE,
+    CREATE_CONFIG_FROM_DEFAULT,
     DUMP_ACCOUNT_IDS,
 ]
 
@@ -58,6 +60,8 @@ def main():
             setup.copy_sv(acc_idx, addon_name)
     elif action == COPY_EXE:
         setup.copy_executables()
+    elif action == CREATE_CONFIG_FROM_DEFAULT:
+        setup.create_config_files_from_default()
     elif action == DUMP_ACCOUNT_IDS:
         setup.dump_account_ids()
 

@@ -162,6 +162,15 @@ class WowSetup:
                 with (sv_path / "MultiboxUtils.lua").open("w") as f:
                     f.write(lua_table.format(acc_idx=acc_idx))
 
+    def create_config_files_from_default(self):
+        for account in self.accounts:
+            wtf_path = account["path"] / "_retail_" / "WTF"
+            with (wtf_path / "Config.wtf").open("w") as f:
+                email = account["email"]
+                license_num = account["license_num"]
+                config_string = self.get_config_string(email, license_num)
+                f.write(config_string)
+
     def initial_setup(self):
         """Executes first steps in a fresh install.
         - create accounts directory tree
